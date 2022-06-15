@@ -1,0 +1,36 @@
+﻿@page "/"
+@using SampleApp.Application.Features.Client.Queries
+@using SampleApp.Core.Models
+@inject IMediator Mediator
+
+<PageTitle>Index</PageTitle>
+
+<h1>Hello, world!</h1>
+
+Welcome to your new app.
+
+@if(_clients != null)
+{
+    <table>
+        @foreach (var client in _clients)
+        {
+            <tr>
+                <td>@client.Id</td>
+                <td>@client.Name</td>
+                <td>@client.Address</td>
+                <td>@client.City</td>
+                <td>@client.PostalCode</td>
+                <td>@client.Nip</td>
+            </tr>
+        }
+    </table>
+}
+
+@code {
+    private IReadOnlyList<Client> _clients;
+    protected override async Task OnInitializedAsync()
+    {
+        _clients = await Mediator.Send(new AllClientsQuery());
+    }
+
+}
